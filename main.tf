@@ -10,6 +10,10 @@ resource "aws_vpc" "mod" {
   }
 }
 
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.mod.id
+}
+
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.mod.id
   cidr_block              = element(var.public_subnets, count.index)
@@ -131,6 +135,7 @@ resource "aws_route_table_association" "private" {
   count          = length(var.private_subnets)
 }
 
+
 resource "aws_flow_log" "vpc" {
   iam_role_arn    = aws_iam_role.vpc.arn
   log_destination = aws_cloudwatch_log_group.vpc.arn
@@ -139,7 +144,8 @@ resource "aws_flow_log" "vpc" {
 }
 
 resource "aws_cloudwatch_log_group" "vpc" {
-  name = "${var.environment}-${var.name}"
+  name              = "${var.environment}-${var.name}"
+  retention_in_days = "365"
 }
 
 resource "aws_iam_role" "vpc" {

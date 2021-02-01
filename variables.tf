@@ -2,12 +2,12 @@ variable "name" {
   description = "Name of the VPC"
 }
 
-variable "project" {
-  description = "Name of the project"
-}
-
 variable "environment" {
   description = "Name of the environment"
+}
+
+variable "project" {
+  description = "Name of the project"
 }
 
 variable "cidr" {
